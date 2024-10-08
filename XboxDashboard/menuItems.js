@@ -11,23 +11,51 @@ export function createMenuItems(scene) {
   const menuSpheres = [];
   const menuLabels = [];
 
+  // Create main sphere
+  const mainSphereRadius = 1;
+  const mainSphereGeometry = new THREE.SphereGeometry(mainSphereRadius, 32, 32);
+  const mainSphereMaterial = new THREE.MeshPhongMaterial({
+    color: 0x008000,
+    transparent: true,
+    opacity: 0.3,
+  });
+  const mainSphere = new THREE.Mesh(mainSphereGeometry, mainSphereMaterial);
+  mainSphere.position.set(0, 0, 0);
+  scene.add(mainSphere);
+
+  const menuItemRadius = 0.2;
+  const menuItemDistance = mainSphereRadius + menuItemRadius + 0.1; // Added small gap
+  const totalHeight = (menuItems.length - 1) * menuItemRadius * 2.5; // Space between items
+
   menuItems.forEach((item, index) => {
     const isActive = index === 0;
 
+    // Calculate vertical position
+    const yPosition =
+      (index - (menuItems.length - 1) / 2) *
+      (totalHeight / (menuItems.length - 1));
+
     // Outer sphere
-    const geometry = new THREE.SphereGeometry(0.2, 32, 32);
+    const geometry = new THREE.SphereGeometry(menuItemRadius, 32, 32);
     const material = new THREE.MeshPhongMaterial({
       color: isActive ? activeColor : inactiveColor,
       transparent: true,
       opacity: isActive ? 0.8 : 0.5,
     });
     const sphere = new THREE.Mesh(geometry, material);
-    sphere.position.set(0, -index * 0.5, 0);
+
+    // Position menu item spheres to the right of the main sphere
+    sphere.position.set(menuItemDistance, yPosition, 0);
+
     scene.add(sphere);
     menuSpheres.push(sphere);
 
     // Inner sphere (selection indicator)
-    const innerGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+    const innerGeometry = new THREE.SphereGeometry(
+      menuItemRadius * 0.5,
+      32,
+      32
+    );
     const innerMaterial = new THREE.MeshPhongMaterial({
       color: activeColor,
       transparent: true,
@@ -49,13 +77,17 @@ export function createMenuItems(scene) {
       rectangleHeight
     );
     const label = new THREE.Mesh(labelGeometry, labelMaterial);
-    label.position.set(0.8, -index * 0.5, 0);
+
+    // Position labels next to menu item spheres
+    label.position.set(menuItemDistance + menuItemRadius + 0.1, yPosition, 0);
+
     scene.add(label);
     menuLabels.push(label);
   });
 
   return { menuItems, menuSpheres, menuLabels };
 }
+
 export function changeSelection(
   currentIndex,
   newIndex,

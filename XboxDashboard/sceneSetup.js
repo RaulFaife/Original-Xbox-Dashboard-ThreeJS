@@ -13,7 +13,8 @@ export function initScene() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  camera.position.z = 5;
+  // Adjust camera position to view the entire scene
+  camera.position.set(0, 0, 5);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
