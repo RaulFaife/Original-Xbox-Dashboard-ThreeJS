@@ -3,6 +3,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export function initScene() {
   const scene = new THREE.Scene();
+
+  //Load background texture
+  const textureImage = require("./public/background.png");
+  const loader = new THREE.TextureLoader().load(textureImage);
+  loader.load(textureImage, function (texture) {
+    scene.background = texture;
+  });
+
   const camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,

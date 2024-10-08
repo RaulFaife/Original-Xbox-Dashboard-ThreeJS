@@ -30,9 +30,9 @@ export function createMenuItems(scene) {
   menuItems.forEach((item, index) => {
     const isActive = index === 0;
 
-    // Calculate vertical position
+    // Calculate vertical position (reversed order)
     const yPosition =
-      (index - (menuItems.length - 1) / 2) *
+      (menuItems.length - 1 - index - (menuItems.length - 1) / 2) *
       (totalHeight / (menuItems.length - 1));
 
     // Outer sphere
@@ -78,8 +78,12 @@ export function createMenuItems(scene) {
     );
     const label = new THREE.Mesh(labelGeometry, labelMaterial);
 
-    // Position labels next to menu item spheres
-    label.position.set(menuItemDistance + menuItemRadius + 0.1, yPosition, 0);
+    // Position labels to the right of menu item spheres
+    label.position.set(
+      menuItemDistance + menuItemRadius + rectangleWidth / 2 + 0.1,
+      yPosition,
+      0
+    );
 
     scene.add(label);
     menuLabels.push(label);
