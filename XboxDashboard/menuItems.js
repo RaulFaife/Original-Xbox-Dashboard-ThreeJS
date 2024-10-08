@@ -12,7 +12,7 @@ export function createMenuItems(scene) {
   const menuLabels = [];
 
   // Create main sphere
-  const mainSphereRadius = 1;
+  const mainSphereRadius = 1.8;
   const mainSphereGeometry = new THREE.SphereGeometry(mainSphereRadius, 32, 32);
   const mainSphereMaterial = new THREE.MeshPhongMaterial({
     color: 0x008000,
@@ -20,7 +20,7 @@ export function createMenuItems(scene) {
     opacity: 0.3,
   });
   const mainSphere = new THREE.Mesh(mainSphereGeometry, mainSphereMaterial);
-  mainSphere.position.set(0, 0, 0);
+  mainSphere.position.set(-1.5, 0.5, 0);
   scene.add(mainSphere);
 
   const menuItemRadius = 0.2;

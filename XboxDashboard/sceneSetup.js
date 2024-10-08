@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import backgroundImage from "./public/background.jpg";
 
 export function initScene() {
@@ -9,7 +8,7 @@ export function initScene() {
   const loader = new THREE.TextureLoader();
   loader.load(backgroundImage, function (texture) {
     // Create a large plane to hold the background
-    const planeGeometry = new THREE.PlaneGeometry(64, 36);
+    const planeGeometry = new THREE.PlaneGeometry(32, 18);
     const planeMaterial = new THREE.MeshBasicMaterial({
       map: texture,
       side: THREE.DoubleSide,
@@ -41,18 +40,15 @@ export function initScene() {
   pointLight.position.set(5, 5, 5);
   scene.add(pointLight);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-
-  return { scene, camera, renderer, controls };
+  return { scene, camera, renderer };
 }
 
-export function animate(renderer, scene, camera, controls) {
-  requestAnimationFrame(() => animate(renderer, scene, camera, controls));
-  controls.update();
+export function animate(renderer, scene, camera) {
+  requestAnimationFrame(() => animate(renderer, scene, camera));
   renderer.render(scene, camera);
 }
 
-// New function to update renderer size
+// Function to update renderer size
 function updateRendererSize(renderer, aspectRatio) {
   const width = Math.min(window.innerWidth, window.innerHeight * aspectRatio);
   const height = width / aspectRatio;
