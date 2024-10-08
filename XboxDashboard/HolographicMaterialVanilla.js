@@ -285,6 +285,18 @@ class HolographicMaterial extends ShaderMaterial {
   update() {
     this.uniforms.time.value = this.clock.getElapsedTime();
   }
+  // Add this new method
+  updateUniforms(options = {}) {
+    for (const [key, value] of Object.entries(options)) {
+      if (this.uniforms[key] !== undefined) {
+        if (key === "hologramColor") {
+          this.uniforms[key].value = new Color(value);
+        } else {
+          this.uniforms[key].value = value;
+        }
+      }
+    }
+  }
 }
 
 export default HolographicMaterial;

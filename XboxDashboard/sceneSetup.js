@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import backgroundImage from "./public/background.jpg";
 
-let holographicMaterial;
+let holographicMaterials;
 
 export function initScene() {
   const scene = new THREE.Scene();
@@ -47,9 +47,11 @@ export function initScene() {
 
 export function animate(renderer, scene, camera) {
   function tick() {
-    if (holographicMaterial) {
-      holographicMaterial.update();
-    }
+    holographicMaterials.forEach((material) => {
+      if (material && material.update) {
+        material.update();
+      }
+    });
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
   }
@@ -74,5 +76,5 @@ export function handleResize(camera, renderer) {
 
 // New function to set the holographic material
 export function setHolographicMaterial(material) {
-  holographicMaterial = material;
+  holographicMaterials = material;
 }
