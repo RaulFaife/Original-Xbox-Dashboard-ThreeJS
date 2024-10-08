@@ -8,8 +8,13 @@ import { createMenuItems, changeSelection } from "./menuItems.js";
 import { handleKeyPress } from "./eventHandlers.js";
 
 const { scene, camera, renderer, controls } = initScene();
-const { menuItems, menuSpheres, menuLabels, holographicMaterial } =
-  createMenuItems(scene);
+const {
+  menuItems,
+  menuSpheres,
+  menuLabels,
+  holographicMaterial,
+  menuItemMaterial,
+} = createMenuItems(scene);
 
 // Set the holographic material
 setHolographicMaterial(holographicMaterial);

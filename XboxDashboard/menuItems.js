@@ -44,7 +44,12 @@ export function createMenuItems(scene) {
       transparent: true,
       opacity: isActive ? 0.8 : 0.5,
     });
-    const sphere = new THREE.Mesh(geometry, material);
+    const menuItemMaterial = new HolographicMaterial({
+      hologramColor: isActive ? activeColor : inactiveColor,
+      opacity: isActive ? 0.8 : 0.5,
+      transparent: true,
+    });
+    const sphere = new THREE.Mesh(geometry, menuItemMaterial);
 
     sphere.position.set(
       mainSphere.position.x + x,
