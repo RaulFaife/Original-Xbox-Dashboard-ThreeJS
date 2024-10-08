@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { createMenuItemTexture } from "./utils.js";
+import HolographicMaterial from "./HolographicMaterialVanilla.js";
 
 const menuItems = ["MEMORY", "MUSIC", "XBOX LIVE", "SETTINGS"];
 const rectangleWidth = 1.2;
@@ -14,26 +15,27 @@ export function createMenuItems(scene) {
   // Create main sphere
   const mainSphereRadius = 1.8;
   const mainSphereGeometry = new THREE.SphereGeometry(mainSphereRadius, 32, 32);
-  const mainSphereMaterial = new THREE.MeshPhongMaterial({
-    color: 0x008000,
-    transparent: true,
-    opacity: 0.3,
+  const holographicMaterial = new HolographicMaterial({
+    hologramColor: "#009900",
   });
-  const mainSphere = new THREE.Mesh(mainSphereGeometry, mainSphereMaterial);
-  mainSphere.position.set(-1.5, 0.5, 0);
+  const mainSphere = new THREE.Mesh(mainSphereGeometry, holographicMaterial);
+  mainSphere.position.set(-1, 0.5, 0); // Moved slightly to the left
   scene.add(mainSphere);
 
   const menuItemRadius = 0.2;
-  const menuItemDistance = mainSphereRadius + menuItemRadius + 0.1; // Added small gap
-  const totalHeight = (menuItems.length - 1) * menuItemRadius * 2.5; // Space between items
+  const menuItemDistance = mainSphereRadius + menuItemRadius + 0.3;
+  const totalAngle = Math.PI * 0.4; // Reduced angle for tighter wrapping
+  const startAngle = Math.PI * -0.1; // Start from upper right
 
   menuItems.forEach((item, index) => {
     const isActive = index === 0;
 
-    // Calculate vertical position (reversed order)
-    const yPosition =
-      (menuItems.length - 1 - index - (menuItems.length - 1) / 2) *
-      (totalHeight / (menuItems.length - 1));
+    // Calculate angle for this menu item
+    const angle = startAngle + (index / (menuItems.length - 1)) * totalAngle;
+
+    // Calculate position using spherical coordinates
+    const x = Math.cos(angle) * menuItemDistance;
+    const y = Math.sin(angle) * menuItemDistance;
 
     // Outer sphere
     const geometry = new THREE.SphereGeometry(menuItemRadius, 32, 32);
@@ -44,8 +46,11 @@ export function createMenuItems(scene) {
     });
     const sphere = new THREE.Mesh(geometry, material);
 
-    // Position menu item spheres to the right of the main sphere
-    sphere.position.set(menuItemDistance, yPosition, 0);
+    sphere.position.set(
+      mainSphere.position.x + x,
+      mainSphere.position.y - y,
+      0
+    );
 
     scene.add(sphere);
     menuSpheres.push(sphere);
@@ -79,17 +84,14 @@ export function createMenuItems(scene) {
     const label = new THREE.Mesh(labelGeometry, labelMaterial);
 
     // Position labels to the right of menu item spheres
-    label.position.set(
-      menuItemDistance + menuItemRadius + rectangleWidth / 2 + 0.1,
-      yPosition,
-      0
-    );
+    const labelDistance = menuItemRadius + rectangleWidth / 2 + 0.1;
+    label.position.set(sphere.position.x + labelDistance, sphere.position.y, 0);
 
     scene.add(label);
     menuLabels.push(label);
   });
 
-  return { menuItems, menuSpheres, menuLabels };
+  return { menuItems, menuSpheres, menuLabels, holographicMaterial };
 }
 
 export function changeSelection(

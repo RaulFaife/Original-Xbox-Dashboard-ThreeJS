@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import backgroundImage from "./public/background.jpg";
 
+let holographicMaterial;
+
 export function initScene() {
   const scene = new THREE.Scene();
 
@@ -44,8 +46,15 @@ export function initScene() {
 }
 
 export function animate(renderer, scene, camera) {
-  requestAnimationFrame(() => animate(renderer, scene, camera));
-  renderer.render(scene, camera);
+  function tick() {
+    if (holographicMaterial) {
+      holographicMaterial.update();
+    }
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  }
+
+  tick();
 }
 
 // Function to update renderer size
@@ -61,4 +70,9 @@ export function handleResize(camera, renderer) {
   updateRendererSize(renderer, aspectRatio);
   camera.aspect = aspectRatio;
   camera.updateProjectionMatrix();
+}
+
+// New function to set the holographic material
+export function setHolographicMaterial(material) {
+  holographicMaterial = material;
 }

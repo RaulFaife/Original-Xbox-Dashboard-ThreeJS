@@ -1,9 +1,18 @@
-import { initScene, animate, handleResize } from "./sceneSetup.js";
+import {
+  initScene,
+  animate,
+  handleResize,
+  setHolographicMaterial,
+} from "./sceneSetup.js";
 import { createMenuItems, changeSelection } from "./menuItems.js";
 import { handleKeyPress } from "./eventHandlers.js";
 
 const { scene, camera, renderer, controls } = initScene();
-const { menuItems, menuSpheres, menuLabels } = createMenuItems(scene);
+const { menuItems, menuSpheres, menuLabels, holographicMaterial } =
+  createMenuItems(scene);
+
+// Set the holographic material
+setHolographicMaterial(holographicMaterial);
 
 let selectedIndex = 0;
 
