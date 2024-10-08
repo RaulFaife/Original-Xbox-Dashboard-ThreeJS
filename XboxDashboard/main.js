@@ -1,6 +1,6 @@
-import { initScene, animate } from "./sceneSetup.js";
+import { initScene, animate, handleResize } from "./sceneSetup.js";
 import { createMenuItems, changeSelection } from "./menuItems.js";
-import { handleKeyPress, handleResize } from "./eventHandlers.js";
+import { handleKeyPress } from "./eventHandlers.js";
 
 const { scene, camera, renderer, controls } = initScene();
 const { menuItems, menuSpheres, menuLabels } = createMenuItems(scene);
